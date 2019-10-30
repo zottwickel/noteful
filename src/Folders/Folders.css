@@ -1,0 +1,29 @@
+.folders {
+    border-radius: 3px;
+    box-shadow: 0 0 5px black;
+    padding: 20px;
+    margin: 10px;
+}
+
+.folderList {
+    padding: 0;
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+h2 {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.folderListItem {
+    margin: 5px;
+}
+
+.folderName {
+    color: #808080;
+}
+
+.folderName:hover {
+    color: black;
+}

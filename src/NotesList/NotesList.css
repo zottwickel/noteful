@@ -1,0 +1,36 @@
+.noteListItem {
+    border-radius: 3px;
+    box-shadow: 0 0 5px black;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.listWrapper {
+    margin: -5px 10px 10px 10px;
+}
+.noteList {
+    padding: 0;
+    width: 100%;
+}
+.noteItemLeft {
+    align-self: center;
+    text-align: left;
+}
+.noteItemRight {
+    align-self: center;
+}
+
+.noteTitle {
+    color: #808080;
+}
+
+.noteTitle:hover {
+    color: black;
+}
+
+.newNoteButton {
+    margin: 10px;
+    float: right;
+}
