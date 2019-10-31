@@ -1,5 +1,6 @@
 import React from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import NotesContext from '../NotesContext'
 import './NotesList.css'
 
 function formatDate(date) {
@@ -13,46 +14,49 @@ function formatDate(date) {
     return date.getMonth()+1 + "/" + date.getDate() + "/" + date.getFullYear() + "  " + strTime;
 }
 
-function NotesList(props) {
-    const id = useParams()
-    let notes = props.notes
-    if (id.folderid) {
-        notes = props.notes.filter(note => {
-            if (note.folderId === id.folderid) {
-                return note
-            }
-        })
-    }
-    return (
-        <div>
-            <div className="listWrapper">
-                <ul className="noteList">
-                    {notes.map(note => {
-                        const modifiedDate = new Date(note.modified)
-                        const notePath = `/note/${note.id}`
-                        return (
-                            <div>
-                                <li className="noteListItem" key={note.id}>
-                                    <div className="noteItemLeft">
-                                        <h3>
-                                            <Link className="noteTitle" to={notePath}>
-                                                {note.name}
-                                            </Link>
-                                        </h3>
-                                        <p>Last Modified: {formatDate(modifiedDate)}</p>
-                                    </div>
-                                    <div className="noteItemRight">
-                                        <button onSubmit={e => e.preventDefault()}>Delete note</button>
-                                    </div>
-                                </li>
-                            </div>
-                        )
-                    })}
-                </ul>
+class NotesList extends React.Component {
+    static contextType = NotesContext
+    render() {
+        const id = this.props.match.params.folderid
+        let notes = this.context.notes
+        if (id) {
+            notes = notes.filter(note => {
+                if (note.folderId === id) {
+                    return note
+                }
+            })
+        }
+        return (
+            <div>
+                <div className="listWrapper">
+                    <ul className="noteList">
+                        {notes.map(note => {
+                            const modifiedDate = new Date(note.modified)
+                            const notePath = `/note/${note.id}`
+                            return (
+                                <div key={note.id}>
+                                    <li className="noteListItem" >
+                                        <div className="noteItemLeft">
+                                            <h3>
+                                                <Link className="noteTitle" to={notePath}>
+                                                    {note.name}
+                                                </Link>
+                                            </h3>
+                                            <p>Last Modified: {formatDate(modifiedDate)}</p>
+                                        </div>
+                                        <div className="noteItemRight">
+                                            <button onClick={() => this.context.deleteNote(note.id)}>Delete note</button>
+                                        </div>
+                                    </li>
+                                </div>
+                            )
+                        })}
+                    </ul>
+                </div>
+                <button className="newNoteButton" onSubmit={e => e.preventDefault()}>Add a note</button>
             </div>
-            <button className="newNoteButton" onSubmit={e => e.preventDefault()}>Add a note</button>
-        </div>
-    )
+        )
+    }
 }
 
 export default NotesList

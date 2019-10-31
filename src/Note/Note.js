@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useParams } from 'react-router-dom'
+import NotesContext from '../NotesContext'
 import './Note.css'
 
 function formatDate(date) {
@@ -13,28 +13,41 @@ function formatDate(date) {
     return date.getMonth()+1 + "/" + date.getDate() + "/" + date.getFullYear() + "  " + strTime;
 }
 
-function Note(props) {
-    const id = useParams()
-    console.log(id)
-    const note = props.notes.find(note => note.id === id.noteid)
-    const modifiedDate = new Date(note.modified)
-    return (
-        <>
-            <div className="noteSelectItem">
-                <div className="noteItemLeft">
-                    <h3 className="noteTitle">{note.name}</h3>
-                    <p>Last Modified: {formatDate(modifiedDate)}</p>
+class Note extends React.Component {
+    static contextType = NotesContext
+    render() {
+        console.log(this.context)
+        const id = this.props.match.params.noteid
+        let note = this.context.notes
+        note = note.find(note => note.id === id)
+        if (!note) { note = {} }
+        const modifiedDate = new Date(note.modified)
+        if (note.id) {
+            return (
+                <>
+                    <div className="noteSelectItem">
+                        <div className="noteItemLeft">
+                            <h3 className="singleNoteTitle">{note.name}</h3>
+                            <p>Last Modified: {formatDate(modifiedDate)}</p>
+                        </div>
+                        <div className="noteItemRight">
+                            <button onClick={() => this.context.deleteNote(note.id)}>Delete note</button>
+                        </div>
+                    </div>
+                    <div className="noteBox">
+                        <h2>{note.name}</h2>
+                        <p>{note.content}</p>
+                    </div>
+                </>
+            )
+        } else { 
+            return (
+                <div className="noteBox">
+                    <h2>The note you are trying to view does not exist.</h2>
                 </div>
-                <div className="noteItemRight">
-                    <button onSubmit={e => e.preventDefault()}>Delete note</button>
-                </div>
-            </div>
-            <div className="noteBox">
-                <h2>{note.name}</h2>
-                <p>{note.content}</p>
-            </div>
-        </>
-    )
+            )
+        }
+    }
 }
 
 export default Note
