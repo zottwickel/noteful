@@ -3,7 +3,8 @@ import React from 'react'
 const NotesContext = React.createContext({
   notes: [],
   folders: [],
-  deleteNote: () => {}
+  deleteNote: () => {},
+  addFolder: () => {}
 })
 
 export default NotesContext

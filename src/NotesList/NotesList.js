@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import NotesContext from '../NotesContext'
+import AddNote from './AddNote'
 import './NotesList.css'
 
 function formatDate(date) {
@@ -15,7 +16,21 @@ function formatDate(date) {
 }
 
 class NotesList extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            newNote: false
+        }
+    }
     static contextType = NotesContext
+
+    toggleNewNote = (event) => {
+        event.preventDefault()
+        this.setState({
+            newNote: !this.state.newNote
+        })
+    }
+
     render() {
         const id = this.props.match.params.folderid
         let notes = this.context.notes
@@ -24,6 +39,7 @@ class NotesList extends React.Component {
                 if (note.folderId === id) {
                     return note
                 }
+                return {}
             })
         }
         return (
@@ -53,7 +69,8 @@ class NotesList extends React.Component {
                         })}
                     </ul>
                 </div>
-                <button className="newNoteButton" onSubmit={e => e.preventDefault()}>Add a note</button>
+                <button className="newNoteButton" onClick={e => this.toggleNewNote(e)}>Add a note</button>
+                {this.state.newNote ? <AddNote toggleNewNote={this.toggleNewNote} /> : null}
             </div>
         )
     }
