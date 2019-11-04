@@ -9,7 +9,7 @@ function formatDate(date) {
     var minutes = date.getMinutes();
     var ampm = hours >= 12 ? 'pm' : 'am';
     hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
+    hours = hours ? hours : 12;
     minutes = minutes < 10 ? '0'+minutes : minutes;
     var strTime = hours + ':' + minutes + ' ' + ampm;
     return date.getMonth()+1 + "/" + date.getDate() + "/" + date.getFullYear() + "  " + strTime;
@@ -50,21 +50,19 @@ class NotesList extends React.Component {
                             const modifiedDate = new Date(note.modified)
                             const notePath = `/note/${note.id}`
                             return (
-                                <div key={note.id}>
-                                    <li className="noteListItem" >
-                                        <div className="noteItemLeft">
-                                            <h3>
-                                                <Link className="noteTitle" to={notePath}>
-                                                    {note.name}
-                                                </Link>
-                                            </h3>
-                                            <p>Last Modified: {formatDate(modifiedDate)}</p>
-                                        </div>
-                                        <div className="noteItemRight">
-                                            <button onClick={() => this.context.deleteNote(note.id)}>Delete note</button>
-                                        </div>
-                                    </li>
-                                </div>
+                                <li key={note.id} className="noteListItem" >
+                                    <div className="noteItemLeft">
+                                        <h3>
+                                            <Link className="noteTitle" to={notePath}>
+                                                {note.name}
+                                            </Link>
+                                        </h3>
+                                        <p>Last Modified: {formatDate(modifiedDate)}</p>
+                                    </div>
+                                    <div className="noteItemRight">
+                                        <button onClick={() => this.context.deleteNote(note.id)}>Delete note</button>
+                                    </div>
+                                </li>
                             )
                         })}
                     </ul>
