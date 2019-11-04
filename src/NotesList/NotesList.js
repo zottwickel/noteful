@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import NotesContext from '../NotesContext'
 import AddNote from './AddNote'
+import NotesError from './NotesError'
 import './NotesList.css'
 
 function formatDate(date) {
@@ -39,37 +40,38 @@ class NotesList extends React.Component {
                 if (note.folderId === id) {
                     return note
                 }
-                return {}
             })
         }
         return (
-            <div>
+            <>
                 <div className="listWrapper">
-                    <ul className="noteList">
-                        {notes.map(note => {
-                            const modifiedDate = new Date(note.modified)
-                            const notePath = `/note/${note.id}`
-                            return (
-                                <li key={note.id} className="noteListItem" >
-                                    <div className="noteItemLeft">
-                                        <h3>
-                                            <Link className="noteTitle" to={notePath}>
-                                                {note.name}
-                                            </Link>
-                                        </h3>
-                                        <p>Last Modified: {formatDate(modifiedDate)}</p>
-                                    </div>
-                                    <div className="noteItemRight">
-                                        <button onClick={() => this.context.deleteNote(note.id)}>Delete note</button>
-                                    </div>
-                                </li>
-                            )
-                        })}
-                    </ul>
+                    <NotesError>
+                        <ul className="noteList">
+                            {notes.map(note => {
+                                const modifiedDate = new Date(note.modified)
+                                const notePath = `/note/${note.id}`
+                                return (
+                                    <li key={note.id} className="noteListItem" >
+                                        <div className="noteItemLeft">
+                                            <h3>
+                                                <Link className="noteTitle" to={notePath}>
+                                                    {note.name}
+                                                </Link>
+                                            </h3>
+                                            <p>Last Modified: {formatDate(modifiedDate)}</p>
+                                        </div>
+                                        <div className="noteItemRight">
+                                            <button onClick={() => this.context.deleteNote(note.id)}>Delete note</button>
+                                        </div>
+                                    </li>
+                                )
+                            })}
+                        </ul>
+                    </NotesError>
                 </div>
                 <button className="newNoteButton" onClick={e => this.toggleNewNote(e)}>Add a note</button>
                 {this.state.newNote ? <AddNote toggleNewNote={this.toggleNewNote} /> : null}
-            </div>
+            </>
         )
     }
 }

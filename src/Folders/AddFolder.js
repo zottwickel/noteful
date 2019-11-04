@@ -1,5 +1,6 @@
 import React from 'react'
 import NotesContext from '../NotesContext'
+import PropTypes from 'prop-types'
 import './AddFolder.css'
 
 class AddFolder extends React.Component {
@@ -47,6 +48,10 @@ class AddFolder extends React.Component {
       </div>
     )
   }
+}
+
+AddFolder.propTypes = {
+  toggleNewFolder: PropTypes.func.isRequired
 }
 
 export default AddFolder

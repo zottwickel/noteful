@@ -1,5 +1,6 @@
 import React from 'react'
 import NotesContext from '../NotesContext'
+import PropTypes from 'prop-types'
 import './AddNote.css'
 
 class AddNote extends React.Component {
@@ -81,6 +82,10 @@ class AddNote extends React.Component {
     </div>
     )
   }
+}
+
+AddNote.poroptypes = {
+  toggleNewNote: PropTypes.func.isRequired
 }
 
 export default AddNote
