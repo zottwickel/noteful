@@ -69,7 +69,7 @@ class AddNote extends React.Component {
             {foldersList.map(folder => {
               return (
                 <option key={folder.id} value={folder.id}>
-                  {folder.name}
+                  {folder.folder_name}
                 </option>
               )
             })}

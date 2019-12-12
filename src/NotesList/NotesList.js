@@ -33,11 +33,11 @@ class NotesList extends React.Component {
     }
 
     render() {
-        const id = this.props.match.params.folderid
+        const id = this.props.match.params.folder_id
         let notes = this.context.notes
         if (id) {
             notes = notes.filter(note => {
-                if (note.folderId === id) {
+                if (note.folder_id == id) {
                     return note
                 }
             })
@@ -48,14 +48,14 @@ class NotesList extends React.Component {
                     <NotesError>
                         <ul className="noteList">
                             {notes.map(note => {
-                                const modifiedDate = new Date(note.modified)
+                                const modifiedDate = new Date(note.date_modified)
                                 const notePath = `/note/${note.id}`
                                 return (
                                     <li key={note.id} className="noteListItem" >
                                         <div className="noteItemLeft">
                                             <h3>
                                                 <Link className="noteTitle" to={notePath}>
-                                                    {note.name}
+                                                    {note.note_name}
                                                 </Link>
                                             </h3>
                                             <p>Last Modified: {formatDate(modifiedDate)}</p>

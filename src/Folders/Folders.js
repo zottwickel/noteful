@@ -31,7 +31,7 @@ class Folders extends React.Component {
                             return (
                                 <li className="folderListItem" key={folder.id}>
                                     <Link className="folderName" to={folderPath}>
-                                        {folder.name}
+                                        {folder.folder_name}
                                     </Link>
                                 </li>
                             )

@@ -5,33 +5,7 @@ import Note from './Note/Note'
 import Folders from './Folders/Folders'
 import NotesContext from './NotesContext'
 import './App.css';
-
-function generateId() {
-  return Math.random().toString(36).substr(2, 8) + '-ffaf-11e8-8eb2-f2801f1b9fd1'
-}
-
-function generateDate() {
-  const date = new Date()
-  const year = date.getUTCFullYear().toString()
-  let month = date.getUTCMonth().toString()
-  if (month.length === 1) { month = "0" + month }
-  let day = date.getUTCDate().toString()
-  if (day.length === 1) { day = "0" + day }
-  let hours = date.getUTCHours().toString()
-  if (hours.length === 1) { hours = "0" + hours }
-  let minutes = date.getUTCMinutes().toString()
-  if (minutes.length === 1) { minutes = "0" + minutes }
-  let seconds = date.getUTCSeconds().toString()
-  if (seconds.length === 1) { seconds = "0" + seconds }
-  let milliseconds = date.getUTCMilliseconds().toString()
-  if (milliseconds.length === 1) { 
-    milliseconds = "00" + milliseconds 
-  } else if (milliseconds.length === 2) {
-    milliseconds = "0" + milliseconds
-  }
-  const time = hours + ":" + minutes + ":" + seconds + "." + milliseconds
-  return year + '-' + month + '-' + day + 'T' + time + 'Z'
-}
+import uuid from 'uuid'
 
 class App extends React.Component {
   state = {
@@ -39,7 +13,7 @@ class App extends React.Component {
     notes: [],
     error: null,
     deleteNote: (noteid) => {
-      fetch(`http://localhost:9090/notes/${noteid}`, { method: 'DELETE' })
+      fetch(`http://localhost:8000/api/notes/${noteid}`, { method: 'DELETE' })
         .then(
           this.setState({
             notes: this.state.notes.filter(note => note.id !== noteid)
@@ -50,10 +24,10 @@ class App extends React.Component {
     addFolder: (event) => {
       event.preventDefault()
       const newFolder = {
-        id: generateId(),
-        name: event.target.name.value
+        id: uuid.v4(),
+        folder_name: event.target.name.value
       }
-      fetch('http://localhost:9090/folders', {
+      fetch('http://localhost:8000/api/folders', {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newFolder)
@@ -68,13 +42,13 @@ class App extends React.Component {
     addNote: (event) => {
       event.preventDefault()
       const newNote = {
-        id: generateId(),
-        name: event.target.name.value,
+        id: uuid.v4(),
+        note_name: event.target.name.value,
         content: event.target.content.value,
-        folderId: event.target.folder.value,
-        modified: generateDate()
+        folder_id: event.target.folder.value,
+        date_modified: new Date()
       }
-      fetch('http://localhost:9090/notes', {
+      fetch('http://localhost:8000/api/notes', {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newNote)
@@ -89,16 +63,17 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:9090/folders')
+    fetch('http://localhost:8000/api/folders')
       .then(response => response.json())
       .then(data => {
+        console.log(data)
         this.setState({
           folders: data
         })
       })
       .catch(err => alert(err.message));
 
-    fetch('http://localhost:9090/notes')
+    fetch('http://localhost:8000/api/notes')
       .then(response => response.json())
       .then(data => {
         this.setState({
@@ -129,13 +104,13 @@ class App extends React.Component {
                 }}
               />
               <Route
-                path='/folder/:folderid'
+                path='/folder/:folder_id'
                 render={(props) => {
                   return <NotesList {...props} />
                 }}
               />
               <Route
-                path='/note/:noteid'
+                path='/note/:note_id'
                 render={(props) => {
                   return <Note {...props} />
                 }}

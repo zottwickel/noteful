@@ -16,18 +16,17 @@ function formatDate(date) {
 class Note extends React.Component {
     static contextType = NotesContext
     render() {
-        console.log(this.context)
-        const id = this.props.match.params.noteid
+        const id = this.props.match.params.note_id
         let note = this.context.notes
-        note = note.find(note => note.id === id)
+        note = note.find(note => note.id == id)
         if (!note) { note = {} }
-        const modifiedDate = new Date(note.modified)
+        const modifiedDate = new Date(note.date_modified)
         if (note.id) {
             return (
                 <>
                     <div className="noteSelectItem">
                         <div className="noteItemLeft">
-                            <h3 className="singleNoteTitle">{note.name}</h3>
+                            <h3 className="singleNoteTitle">{note.note_name}</h3>
                             <p>Last Modified: {formatDate(modifiedDate)}</p>
                         </div>
                         <div className="noteItemRight">
@@ -35,7 +34,7 @@ class Note extends React.Component {
                         </div>
                     </div>
                     <div className="noteBox">
-                        <h2>{note.name}</h2>
+                        <h2>{note.note_name}</h2>
                         <p>{note.content}</p>
                     </div>
                 </>

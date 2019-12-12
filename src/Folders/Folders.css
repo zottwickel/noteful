@@ -18,6 +18,7 @@ h2 {
 
 .folderListItem {
     margin: 5px;
+    text-align: left;
 }
 
 .folderName {
