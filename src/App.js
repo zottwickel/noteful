@@ -13,7 +13,7 @@ class App extends React.Component {
     notes: [],
     error: null,
     deleteNote: (noteid) => {
-      fetch(`http://localhost:8000/api/notes/${noteid}`, { method: 'DELETE' })
+      fetch(`https://secure-spire-79205.herokuapp.com/api/notes/${noteid}`, { method: 'DELETE' })
         .then(
           this.setState({
             notes: this.state.notes.filter(note => note.id !== noteid)
@@ -27,7 +27,7 @@ class App extends React.Component {
         id: uuid.v4(),
         folder_name: event.target.name.value
       }
-      fetch('http://localhost:8000/api/folders', {
+      fetch('https://secure-spire-79205.herokuapp.com/api/folders', {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newFolder)
@@ -48,7 +48,7 @@ class App extends React.Component {
         folder_id: event.target.folder.value,
         date_modified: new Date()
       }
-      fetch('http://localhost:8000/api/notes', {
+      fetch('https://secure-spire-79205.herokuapp.com/api/notes', {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newNote)
@@ -63,7 +63,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:8000/api/folders')
+    fetch('https://secure-spire-79205.herokuapp.com/api/folders')
       .then(response => response.json())
       .then(data => {
         console.log(data)
@@ -73,7 +73,7 @@ class App extends React.Component {
       })
       .catch(err => alert(err.message));
 
-    fetch('http://localhost:8000/api/notes')
+    fetch('https://secure-spire-79205.herokuapp.com/api/notes')
       .then(response => response.json())
       .then(data => {
         this.setState({
